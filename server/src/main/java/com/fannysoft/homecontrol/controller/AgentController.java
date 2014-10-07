@@ -29,7 +29,7 @@ public class AgentController {
 	@RequestMapping(value = "/agents", method = RequestMethod.GET)
 	public @ResponseBody List<Agent> getAllAgents() {
 		List<Agent> list = new ArrayList<Agent>();
-		list.add(new DummyActor("Dummy"));
+		list.addAll(agentRepository.getAgents());
 		return list;
 	}
 	

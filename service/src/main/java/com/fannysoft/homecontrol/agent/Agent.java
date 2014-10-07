@@ -4,4 +4,8 @@ public interface Agent {
 
 	String getName();
 	
+	String getDescription();
+	
+	int getId();
+	
 }

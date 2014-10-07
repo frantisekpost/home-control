@@ -2,23 +2,24 @@ package com.fannysoft.homecontrol.agent;
 
 import java.io.Serializable;
 
-public class DummyActor implements OnOffActor, Serializable {
+public class DummyActor extends AbstractAgent implements OnOffActor, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String name;
+	private OnOffState state = OnOffState.OFF;
 	
-	public DummyActor(String name) {
-		this.name = name;
+	public DummyActor(String name, String description, int id) {
+		super(name, description, id);
 	}
 	
 	public boolean setState(OnOffState state) {
+		this.state = state;
 		switch (state) {
 		case ON:
-			System.out.println(name + " set to on");
+			System.out.println(getName() + " set to on");
 			return true;
 		case OFF:
-			System.out.println(name + " set to off");
+			System.out.println(getName() + " set to off");
 			return true;
 		default:
 			return false;
@@ -26,8 +27,7 @@ public class DummyActor implements OnOffActor, Serializable {
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public OnOffState getState() {
+		return state;
 	}
-
 }
