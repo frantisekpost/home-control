@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fannysoft.homecontrol.agent.Agent;
 import com.fannysoft.homecontrol.agent.DummyActor;
+import com.fannysoft.homecontrol.agent.DummyDataProvider;
 
 @Repository
 public class AgentRepositoryImpl implements AgentRepository {
@@ -16,6 +17,7 @@ public class AgentRepositoryImpl implements AgentRepository {
 	static {
 		agents.add(new DummyActor("dummy actor 1", "lorem ipsum", 1));
 		agents.add(new DummyActor("dummy actor 2", "dolor sit amet", 2));
+		agents.add(new DummyDataProvider(3));
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fannysoft.homecontrol.agent.Agent;
-import com.fannysoft.homecontrol.agent.DummyActor;
+import com.fannysoft.homecontrol.agent.DataProvider;
 import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
 import com.fannysoft.homecontrol.repository.AgentRepository;
@@ -47,6 +47,11 @@ public class AgentController {
 		OnOffActor actor = (OnOffActor) agentRepository.getAgent(actorId);
 		actor.setState(OnOffState.OFF);
 		return "ok";
+	}
+	
+	@RequestMapping(value = "/data/get/{id}", method = RequestMethod.GET)
+	public @ResponseBody DataProvider getData(@PathVariable("id") int providerId) {
+		return (DataProvider) agentRepository.getAgent(providerId);
 	}
 	
 }
