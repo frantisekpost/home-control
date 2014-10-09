@@ -2,6 +2,8 @@ package com.fannysoft.homecontrol.client;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
@@ -10,6 +12,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -141,30 +144,47 @@ public class ComponentFactory {
 			valueLabel.setText(dateFormat.format(date));
 			break;
 		case LATENCY_DATA:
+			panel.remove(valueLabel);
+			JButton buttonShow = new JButton("Show data");
+			panel.add(buttonShow, gc);
+			
 			LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) data;
 			ArrayList<Integer> minuteQueue = (ArrayList<Integer>) map.get("minuteQueue");
 			ArrayList<Integer> hourQueue = (ArrayList<Integer>) map.get("hourQueue");
 			ArrayList<Integer> dayQueue = (ArrayList<Integer>) map.get("dayQueue");
 			
-			LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
-			System.out.println("data");
-			System.out.println("minute: ");
-			for (long l : latencyData.getMinuteQueue()) {
-				System.out.print(" " + l);
-			}
-			System.out.println("hour: ");
-			for (long l : latencyData.getHourQueue()) {
-				System.out.print(" " + l);
-			}
-			System.out.println("day: ");
-			for (long l : latencyData.getDayQueue()) {
-				System.out.print(" " + l);
-			}
+			final LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
+
+			buttonShow.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					showLatencyData(latencyData);
+				}
+			});
+			
 		default:
 			break;
 		}
 		
 		return panel;
+	}
+
+	protected static void showLatencyData(LatencyDTO latencyData) {
+		System.out.println("last 60 minutes: ");
+		for (long l : latencyData.getMinuteQueue()) {
+			System.out.print(" " + l);
+		}
+		System.out.println("");
+		System.out.println("last 24 hours: ");
+		for (long l : latencyData.getHourQueue()) {
+			System.out.print(" " + l);
+		}
+		System.out.println("");
+		System.out.println("last 30 days: ");
+		for (long l : latencyData.getDayQueue()) {
+			System.out.print(" " + l);
+		}
 	}
 	
 }
