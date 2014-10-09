@@ -10,4 +10,8 @@ public interface AgentRepository {
 	
 	List<Agent> getAgents();
 	
+	void addAgent(Agent agent);
+	
+	void removeAgent(Agent agent);
+	
 }
