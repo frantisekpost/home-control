@@ -16,8 +16,6 @@ import com.fannysoft.homecontrol.agent.Agent;
 import com.fannysoft.homecontrol.agent.DataProvider;
 import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
-import com.fannysoft.homecontrol.agents.NetworkLatencyDataProvider;
-import com.fannysoft.homecontrol.agents.ServerDateProvider;
 import com.fannysoft.homecontrol.repository.AgentRepository;
 
 @Controller
@@ -30,14 +28,6 @@ public class AgentController {
 	
 	@RequestMapping(value = "/agents", method = RequestMethod.GET)
 	public @ResponseBody List<Agent> getAllAgents() {
-		
-		if (agentRepository.getAgents().size() == 2) { //TODO prepsat 
-			NetworkLatencyDataProvider latency = new NetworkLatencyDataProvider("network latency", "measures network latency ", 10);
-			ServerDateProvider date = new ServerDateProvider(11);
-			agentRepository.addAgent(latency);
-			agentRepository.addAgent(date);
-		}
-		
 		List<Agent> list = new ArrayList<Agent>();
 		list.addAll(agentRepository.getAgents());
 		return list;
