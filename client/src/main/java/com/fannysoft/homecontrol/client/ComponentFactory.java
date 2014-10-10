@@ -28,7 +28,6 @@ import com.fannysoft.homecontrol.data.LatencyDTO;
 public class ComponentFactory {
 
 //	private static final String SERVER_URL = "http://localhost:8080/server";
-	public static final String SERVER_URL = "http://192.168.111.50:8123/server";
 	private static final String ACTOR_URL = "/actor";
 	private static final String START_ACTOR_URL = "/start/";
 	private static final String STOP_ACTOR_URL = "/stop/";
@@ -90,10 +89,10 @@ public class ComponentFactory {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (button.isSelected()) {
-					restTemplate.getForObject(SERVER_URL+ACTOR_URL+START_ACTOR_URL+id, String.class);
+					restTemplate.getForObject(Application.SERVER_URI+ACTOR_URL+START_ACTOR_URL+id, String.class);
 					button.setText(OnOffState.ON.name());
 				} else {
-					restTemplate.getForObject(SERVER_URL+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
+					restTemplate.getForObject(Application.SERVER_URI+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
 					button.setText(OnOffState.OFF.name());
 				}
 			}
