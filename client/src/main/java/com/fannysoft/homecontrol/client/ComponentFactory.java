@@ -1,5 +1,6 @@
 package com.fannysoft.homecontrol.client;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,9 +15,13 @@ import java.util.LinkedHashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.springframework.web.client.RestTemplate;
@@ -144,7 +149,7 @@ public class ComponentFactory {
 			break;
 		case LATENCY_DATA:
 			panel.remove(valueLabel);
-			JButton buttonShow = new JButton("Show data");
+			final JButton buttonShow = new JButton("Show data");
 			panel.add(buttonShow, gc);
 			
 			LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) data;
@@ -158,7 +163,7 @@ public class ComponentFactory {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					showLatencyData(latencyData);
+					showLatencyData(latencyData, buttonShow);
 				}
 			});
 			
@@ -169,21 +174,32 @@ public class ComponentFactory {
 		return panel;
 	}
 
-	protected static void showLatencyData(LatencyDTO latencyData) {
-		System.out.println("last 60 minutes: ");
+	protected static void showLatencyData(LatencyDTO latencyData, JComponent parentComponent) {
+		//TODO some graphs will be here one day
+		JFrame frame = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parentComponent);
+		JDialog dialog = new JDialog(frame, true);
+		dialog.setTitle("Network latency data dialog");
+		JPanel panel = new JPanel(new BorderLayout());
+		JTextArea textArea = new JTextArea();
+		panel.add(textArea, BorderLayout.CENTER);
+		dialog.setContentPane(panel);
+		
+		StringBuilder text = new StringBuilder("Latency of network in ms \n\nLast 60 minutes: \n");
 		for (long l : latencyData.getMinuteQueue()) {
-			System.out.print(" " + l);
+			text.append(" " + l);
 		}
-		System.out.println("");
-		System.out.println("last 24 hours: ");
+		text.append("\n\nLast 24 hours: \n");
 		for (long l : latencyData.getHourQueue()) {
-			System.out.print(" " + l);
+			text.append(" " + l);
 		}
-		System.out.println("");
-		System.out.println("last 30 days: ");
+		text.append("\n\nLast 30 days: \n");
 		for (long l : latencyData.getDayQueue()) {
 			System.out.print(" " + l);
 		}
+		
+		textArea.setText(text.toString());
+		dialog.pack();
+		dialog.setVisible(true);
 	}
 	
 }
