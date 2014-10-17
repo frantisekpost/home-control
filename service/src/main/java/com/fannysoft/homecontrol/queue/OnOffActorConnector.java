@@ -1,5 +1,7 @@
 package com.fannysoft.homecontrol.queue;
 
-public interface OnOffActorConnector extends ActorConnector {
+import com.fannysoft.homecontrol.agent.OnOffActor;
+
+public interface OnOffActorConnector<T extends OnOffActor> extends ActorConnector<T> {
 
 }

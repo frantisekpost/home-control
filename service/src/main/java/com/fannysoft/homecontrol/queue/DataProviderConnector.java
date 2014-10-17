@@ -1,5 +1,7 @@
 package com.fannysoft.homecontrol.queue;
 
-public interface DataProviderConnector extends AgentConnector {
+import com.fannysoft.homecontrol.agent.DataProvider;
+
+public interface DataProviderConnector<T extends DataProvider> extends AgentConnector<T> {
 
 }

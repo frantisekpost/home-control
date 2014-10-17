@@ -1,7 +1,11 @@
 package com.fannysoft.homecontrol.queue;
 
-public interface AgentConnector {
+import com.fannysoft.homecontrol.agent.Agent;
+
+public interface AgentConnector<T extends Agent> {
 
 	void sendKeepalive();
+	
+	void connectAgent(T agent);
 	
 }
