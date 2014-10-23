@@ -17,8 +17,8 @@ public abstract class AbstractMessageTransporter extends AbstractMessageConsumer
 	private FutureConnection sendConnection;
 	
 	@Override
-	void init(BrokerConfiguration agentConfiguration) throws URISyntaxException {
-		super.init(agentConfiguration);
+	void init(BrokerConfiguration brokerConfiguration) throws URISyntaxException {
+		super.init(brokerConfiguration);
 		
 		sendConnection = mqtt.futureConnection();
 		try {
@@ -27,7 +27,7 @@ public abstract class AbstractMessageTransporter extends AbstractMessageConsumer
 			e.printStackTrace();
 		}
 		
-        topic = new UTF8Buffer(agentConfiguration.getPublishDestination());
+        topic = new UTF8Buffer(brokerConfiguration.getPublishDestination());
 	}
 	
 	public void sendMessage(String message) {
