@@ -12,7 +12,7 @@ public class DemoActorAgent implements OnOffActor {
 	private OnOffActorConnectorImpl agentConnector;
 	
 	public DemoActorAgent(AgentConfiguration agentConfiguration) {
-		agentConnector = new OnOffActorConnectorImpl(agentConfiguration);
+		agentConnector = new OnOffActorConnectorImpl(agentConfiguration, this);
 		agentConnector.connectAgent(this);
 	}
 	

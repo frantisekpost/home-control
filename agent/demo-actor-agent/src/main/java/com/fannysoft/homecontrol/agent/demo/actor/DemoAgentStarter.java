@@ -14,8 +14,7 @@ public class DemoAgentStarter {
 		agentConfiguration.setUser("admin");
 		
 		DemoActorAgent agent = new DemoActorAgent(agentConfiguration);
-		System.out.println("press any key");
-		
+				
 		synchronized (agent) {
 			agent.wait();
 		}

@@ -1,9 +1,11 @@
 package com.fannysoft.homecontrol.queue;
 
+import org.fusesource.hawtbuf.AsciiBuffer;
 import org.fusesource.hawtbuf.Buffer;
 import org.fusesource.hawtbuf.UTF8Buffer;
 import org.fusesource.mqtt.client.Callback;
 import org.fusesource.mqtt.client.CallbackConnection;
+import org.fusesource.mqtt.client.FutureConnection;
 import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
 import org.fusesource.mqtt.client.Topic;
@@ -18,6 +20,8 @@ public class AgentRegisterMQTTListener implements InitializingBean {
     String host = "localhost";
     int port = 1883;
     final String destination = "/topic/register";
+    private UTF8Buffer topic;
+	private FutureConnection transmitConnection;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -29,9 +33,9 @@ public class AgentRegisterMQTTListener implements InitializingBean {
         mqtt.setHost(host, port);
         mqtt.setUserName(user);
         mqtt.setPassword(password);
-        final CallbackConnection connection = mqtt.callbackConnection();
+        final CallbackConnection receiveConnection = mqtt.callbackConnection();
         
-        connection.listener(new org.fusesource.mqtt.client.Listener() {
+        receiveConnection.listener(new org.fusesource.mqtt.client.Listener() {
             public void onConnected() {
             	System.out.println("onConnected");
             }
@@ -42,20 +46,18 @@ public class AgentRegisterMQTTListener implements InitializingBean {
                 System.out.println("onFailure");
             }
             public void onPublish(UTF8Buffer topic, Buffer msg, Runnable ack) {
-            	System.out.println("onPublish");
-                String body = msg.utf8().toString();
-                
-                
-                System.out.println("received message " + body);
-                ack.run();
+            	String body = msg.utf8().toString();
+            	System.out.println("server prijal zpravu " + body);
+            	ack.run();
+                respondToClient();
             }
         });
         
-        connection.connect(new Callback<Void>() {
+        receiveConnection.connect(new Callback<Void>() {
             @Override
             public void onSuccess(Void value) {
                 Topic[] topics = {new Topic(destination, QoS.EXACTLY_ONCE)};
-                connection.subscribe(topics, new Callback<byte[]>() {
+                receiveConnection.subscribe(topics, new Callback<byte[]>() {
                     
                 	public void onSuccess(byte[] qoses) {
                     }
@@ -72,6 +74,14 @@ public class AgentRegisterMQTTListener implements InitializingBean {
             }
             
         });
-
+        
+        topic = new UTF8Buffer("/topic/agent");
+        transmitConnection = mqtt.futureConnection();
+        transmitConnection.connect().await();
+	}
+	
+	private void respondToClient() {
+		Buffer msg = new AsciiBuffer("Hello client, this is server ");
+		transmitConnection.publish(topic, msg, QoS.EXACTLY_ONCE, false);
 	}
 }

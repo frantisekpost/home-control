@@ -5,8 +5,8 @@ import com.fannysoft.homecontrol.config.AgentConfiguration;
 
 public class OnOffActorConnectorImpl extends AgentConnectorImpl<OnOffActor> {
 
-	public OnOffActorConnectorImpl(AgentConfiguration agentConfiguration) {
-		super(agentConfiguration);
+	public OnOffActorConnectorImpl(AgentConfiguration agentConfiguration, OnOffActor agent) {
+		super(agentConfiguration, agent);
 	}
 	
 	

@@ -1,7 +1,5 @@
 package com.fannysoft.homecontrol.config;
 
-
-
 public interface AgentConfiguration {
 
 	String getHost();
