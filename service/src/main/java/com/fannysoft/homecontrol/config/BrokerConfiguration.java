@@ -1,6 +1,6 @@
 package com.fannysoft.homecontrol.config;
 
-public interface AgentConfiguration {
+public interface BrokerConfiguration {
 
 	String getHost();
 
@@ -10,7 +10,9 @@ public interface AgentConfiguration {
 
 	String getPassword();
 
-	String getDestination();
+	String getConsumeDestination();
+
+	String getPublishDestination();
 
 	long getKeepaliveDelay();
 

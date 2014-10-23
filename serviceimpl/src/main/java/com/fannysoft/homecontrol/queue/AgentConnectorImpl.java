@@ -5,7 +5,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.fannysoft.homecontrol.agent.Agent;
-import com.fannysoft.homecontrol.config.AgentConfiguration;
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 
 //TODO during registration ticket, if agent has no id, it sends its UUID. server receives message and assing an id to this UUID.\
 //client receives all responses, so it recognises its message with and UUID in the server repsonse with the new id.
@@ -15,7 +15,7 @@ public class AgentConnectorImpl<T extends Agent> extends AbstractMessageTranspor
 	
 	protected T connectedAgent;
 	
-	public AgentConnectorImpl(AgentConfiguration agentConfiguration, T agent) {
+	public AgentConnectorImpl(BrokerConfiguration agentConfiguration, T agent) {
 		this.connectedAgent = agent;
 		try {
 			init(agentConfiguration);
@@ -50,9 +50,8 @@ public class AgentConnectorImpl<T extends Agent> extends AbstractMessageTranspor
 	}
 
 	@Override
-	boolean acceptMessage(String message) {
+	void acceptMessage(String message) {
 		System.out.println("Agent received message " + message);
-		return true;
 	}
 
 }

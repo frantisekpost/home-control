@@ -10,14 +10,13 @@ import org.fusesource.mqtt.client.MQTT;
 import org.fusesource.mqtt.client.QoS;
 import org.fusesource.mqtt.client.Topic;
 
-import com.fannysoft.homecontrol.config.AgentConfiguration;
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 
 public abstract class AbstractMessageConsumer {
 
-    private final String destination = "/topic/agent";
     protected MQTT mqtt;
 	
-	void init(AgentConfiguration agentConfiguration) throws URISyntaxException {
+	void init(final BrokerConfiguration agentConfiguration) throws URISyntaxException {
 		mqtt = new MQTT();
         mqtt.setHost(agentConfiguration.getHost(), agentConfiguration.getPort());
 		mqtt.setUserName(agentConfiguration.getUser());
@@ -39,8 +38,7 @@ public abstract class AbstractMessageConsumer {
             
         	public void onPublish(UTF8Buffer topic, Buffer msg, Runnable ack) {
                 String body = msg.utf8().toString();
-                System.out.println("on publish " + ack.hashCode());
-                boolean success = acceptMessage(body);
+                acceptMessage(body);
                 ack.run();
             }
         	
@@ -49,7 +47,7 @@ public abstract class AbstractMessageConsumer {
         connection.connect(new Callback<Void>() {
             @Override
             public void onSuccess(Void value) {
-                Topic[] topics = {new Topic(destination, QoS.EXACTLY_ONCE)};
+                Topic[] topics = {new Topic(agentConfiguration.getConsumeDestination(), QoS.EXACTLY_ONCE)};
                 connection.subscribe(topics, new Callback<byte[]>() {
                     
                 	public void onSuccess(byte[] qoses) {
@@ -69,6 +67,6 @@ public abstract class AbstractMessageConsumer {
         });
 	}
 	
-	abstract boolean acceptMessage(String message);
+	abstract void acceptMessage(String message);
 	
 }

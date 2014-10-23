@@ -1,11 +1,11 @@
 package com.fannysoft.homecontrol.queue;
 
 import com.fannysoft.homecontrol.agent.OnOffActor;
-import com.fannysoft.homecontrol.config.AgentConfiguration;
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 
 public class OnOffActorConnectorImpl extends AgentConnectorImpl<OnOffActor> {
 
-	public OnOffActorConnectorImpl(AgentConfiguration agentConfiguration, OnOffActor agent) {
+	public OnOffActorConnectorImpl(BrokerConfiguration agentConfiguration, OnOffActor agent) {
 		super(agentConfiguration, agent);
 	}
 	

@@ -8,7 +8,7 @@ import org.fusesource.hawtbuf.UTF8Buffer;
 import org.fusesource.mqtt.client.FutureConnection;
 import org.fusesource.mqtt.client.QoS;
 
-import com.fannysoft.homecontrol.config.AgentConfiguration;
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 
 public abstract class AbstractMessageTransporter extends AbstractMessageConsumer {
 
@@ -17,7 +17,7 @@ public abstract class AbstractMessageTransporter extends AbstractMessageConsumer
 	private FutureConnection sendConnection;
 	
 	@Override
-	void init(AgentConfiguration agentConfiguration) throws URISyntaxException {
+	void init(BrokerConfiguration agentConfiguration) throws URISyntaxException {
 		super.init(agentConfiguration);
 		
 		sendConnection = mqtt.futureConnection();
@@ -27,7 +27,7 @@ public abstract class AbstractMessageTransporter extends AbstractMessageConsumer
 			e.printStackTrace();
 		}
 		
-        topic = new UTF8Buffer(agentConfiguration.getDestination());
+        topic = new UTF8Buffer(agentConfiguration.getPublishDestination());
 	}
 	
 	public void sendMessage(String message) {

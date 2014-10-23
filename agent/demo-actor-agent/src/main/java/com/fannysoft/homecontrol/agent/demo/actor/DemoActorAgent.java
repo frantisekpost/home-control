@@ -2,7 +2,7 @@ package com.fannysoft.homecontrol.agent.demo.actor;
 
 import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
-import com.fannysoft.homecontrol.config.AgentConfiguration;
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 import com.fannysoft.homecontrol.queue.OnOffActorConnectorImpl;
 
 public class DemoActorAgent implements OnOffActor {
@@ -11,7 +11,7 @@ public class DemoActorAgent implements OnOffActor {
 	
 	private OnOffActorConnectorImpl agentConnector;
 	
-	public DemoActorAgent(AgentConfiguration agentConfiguration) {
+	public DemoActorAgent(BrokerConfiguration agentConfiguration) {
 		agentConnector = new OnOffActorConnectorImpl(agentConfiguration, this);
 		agentConnector.connectAgent(this);
 	}

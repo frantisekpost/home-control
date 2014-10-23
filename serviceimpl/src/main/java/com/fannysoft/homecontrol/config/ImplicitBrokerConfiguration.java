@@ -1,12 +1,13 @@
 package com.fannysoft.homecontrol.config;
 
-public class ImplicitAgentConfiguration implements AgentConfiguration {
+public class ImplicitBrokerConfiguration implements BrokerConfiguration {
 
 	private String host;
 	private int port;
 	private String user;
 	private String password;
-	private String destination;
+	private String consumeDestination;
+	private String publishDestination;
 	private int keepaliveDelay;
 	
 	@Override
@@ -30,11 +31,6 @@ public class ImplicitAgentConfiguration implements AgentConfiguration {
 	}
 
 	@Override
-	public String getDestination() {
-		return destination;
-	}
-
-	@Override
 	public long getKeepaliveDelay() {
 		return keepaliveDelay;
 	}
@@ -55,14 +51,24 @@ public class ImplicitAgentConfiguration implements AgentConfiguration {
 		this.password = password;
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
-	}
-
 	public void setKeepaliveDelay(int keepaliveDelay) {
 		this.keepaliveDelay = keepaliveDelay;
 	}
-	
-	
 
+	public String getConsumeDestination() {
+		return consumeDestination;
+	}
+
+	public void setConsumeDestination(String consumeDestination) {
+		this.consumeDestination = consumeDestination;
+	}
+
+	public String getPublishDestination() {
+		return publishDestination;
+	}
+
+	public void setPublishDestination(String publishDestination) {
+		this.publishDestination = publishDestination;
+	}
+	
 }
