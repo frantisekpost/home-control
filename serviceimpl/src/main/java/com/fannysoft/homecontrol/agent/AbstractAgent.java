@@ -15,10 +15,9 @@ public class AbstractAgent implements Agent {
 	public AbstractAgent() {
 	}
 	
-	public AbstractAgent(String name, String description, int id) {
+	public AbstractAgent(String name, String description) {
 		this.name = name;
 		this.description = description;
-		this.id = id;
 	}
 	
 	public void setName(String name) {

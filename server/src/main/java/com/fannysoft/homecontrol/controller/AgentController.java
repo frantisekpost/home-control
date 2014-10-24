@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fannysoft.homecontrol.agent.Agent;
 import com.fannysoft.homecontrol.agent.DataProvider;
-import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
 import com.fannysoft.homecontrol.queue.AgentRepo;
+import com.fannysoft.homecontrol.queue.ServerAgent;
 
 @Controller
 public class AgentController {
@@ -34,16 +34,16 @@ public class AgentController {
 	@RequestMapping(value = "/actor/start/{id}", method = RequestMethod.GET)
 	public @ResponseBody String startActor(@PathVariable("id") int actorId) {
 		logger.info("Start actor, ID="+actorId);
-		OnOffActor actor = (OnOffActor) agentRepo.getAgent(actorId);
-		actor.setState(OnOffState.ON);
+		ServerAgent agent = agentRepo.getAgent(actorId);
+		agent.sendState(OnOffState.ON);
 		return "ok";
 	}
 	
 	@RequestMapping(value = "/actor/stop/{id}", method = RequestMethod.GET)
 	public @ResponseBody String stopActor(@PathVariable("id") int actorId) {
 		logger.info("Stop actor, ID="+actorId);
-		OnOffActor actor = (OnOffActor) agentRepo.getAgent(actorId);
-		actor.setState(OnOffState.OFF);
+		ServerAgent agent = agentRepo.getAgent(actorId);
+		agent.sendState(OnOffState.OFF);
 		return "ok";
 	}
 	

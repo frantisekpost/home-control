@@ -6,8 +6,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fannysoft.homecontrol.agent.Agent;
-import com.fannysoft.homecontrol.agent.DummyActor;
 import com.fannysoft.homecontrol.config.BrokerConfiguration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,18 +24,17 @@ public class AgentRegistrator extends AbstractMessageTransporter implements Init
 	
 	@Override
 	void acceptMessage(String message) {
-		System.out.println("AgentRegistrator received message " + message);
-		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		Agent agent = null;
+		ServerAgent agent = null;
 		try {
-			agent = objectMapper.readValue(message, DummyActor.class);
+			agent = objectMapper.readValue(message, ServerAgent.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		if (agent != null) {
+			agent.setAgentRegistrator(this);
 			if (agent.getId() == null) {
 				Integer id = agentRepo.putAgent(agent);
 				String response = agent.getUuid() + ";" + id;

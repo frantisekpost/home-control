@@ -8,8 +8,8 @@ import com.fannysoft.homecontrol.data.DataType;
 
 public class ServerDateProvider extends AbstractAgent implements DataProvider {
 
-	public ServerDateProvider(int id) {
-		super("Dummy data provider", "provides current date", id);
+	public ServerDateProvider() {
+		super("Dummy data provider", "provides current date");
 	}
 
 	@Override

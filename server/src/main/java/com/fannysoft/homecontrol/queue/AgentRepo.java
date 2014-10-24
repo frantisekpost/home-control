@@ -5,8 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fannysoft.homecontrol.agent.Agent;
-
 public class AgentRepo {
 
 	private static final AgentRepo instance = new AgentRepo();
@@ -14,15 +12,15 @@ public class AgentRepo {
 	private AgentRepo() {
 	}
 	
-	private Map<Integer, Agent> agentMap = new LinkedHashMap<>();
+	private Map<Integer, ServerAgent> agentMap = new LinkedHashMap<>();
 	
 	private Integer idSequence = 0;
 	
-	public Agent getAgent(Integer id) {
+	public ServerAgent getAgent(Integer id) {
 		return agentMap.get(id);
 	}
 	
-	public Integer putAgent(Agent agent) {
+	public Integer putAgent(ServerAgent agent) {
 		idSequence++;
 		agent.setId(idSequence);
 		agentMap.put(idSequence, agent);
@@ -33,8 +31,8 @@ public class AgentRepo {
 		return instance;
 	}
 	
-	public List<Agent> getAllAgents() {
-		List<Agent> agents = new ArrayList<>();
+	public List<ServerAgent> getAllAgents() {
+		List<ServerAgent> agents = new ArrayList<>();
 		agents.addAll(agentMap.values());
 		return agents;
 	}

@@ -36,8 +36,8 @@ public class NetworkLatencyDataProvider extends AbstractAgent implements Periodi
 	
 	private static final LatencyChecker latencyChecker = LatencyChecker.getInstance();
 	
-	public NetworkLatencyDataProvider(String name, String description, int id) {
-		super(name, description, id);
+	public NetworkLatencyDataProvider(String name, String description) {
+		super(name, description);
 
 		task = new TimerTask() {
 			
@@ -94,7 +94,6 @@ public class NetworkLatencyDataProvider extends AbstractAgent implements Periodi
 	}
 	
 	private void addLatencyToMinuteQueue(int latency) {
-		System.out.println("minute " + latency);
 		minuteCounter++;
 		if (minuteCounter == minuteQueueCapacity) {
 			addLatencyToHourQueue(computeAverage(minuteQueue, minuteQueueCapacity));
@@ -121,7 +120,6 @@ public class NetworkLatencyDataProvider extends AbstractAgent implements Periodi
 	}
 
 	private void addLatencyToDayQueue(int latency) {
-		System.out.println("day " + latency);
 		dayQueue.add(latency);
 		if (dayQueue.size() > dayQueueCapacity) {
 			dayQueue.remove(0);

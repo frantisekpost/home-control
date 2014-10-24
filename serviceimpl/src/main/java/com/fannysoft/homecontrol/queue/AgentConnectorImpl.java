@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.fannysoft.homecontrol.agent.Agent;
+import com.fannysoft.homecontrol.agent.OnOffActor;
+import com.fannysoft.homecontrol.agent.OnOffState;
 import com.fannysoft.homecontrol.config.BrokerConfiguration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,18 +63,24 @@ public class AgentConnectorImpl<T extends Agent> extends AbstractMessageTranspor
 
 	@Override
 	void acceptMessage(String message) {
-		String expectedMessage = connectedAgent.getUuid() + ";";
-		if (message.startsWith(expectedMessage)) {
+		String setIdMessage = connectedAgent.getUuid() + ";";
+		if (message.startsWith(setIdMessage)) {
 			int index = message.indexOf(";");
 			if (index != -1) {
 				String idSubstring = message.substring(index+1);
 				int id = Integer.parseInt(idSubstring);
-				System.out.println("id : " + id);
 				connectedAgent.setId(id);
 			}
-			System.out.println("Agent " + connectedAgent.getUuid() + " " + connectedAgent.getId() + " + received message " + message);
 		} else {
-			System.out.println(message);
+			String commandExpectedMessage = connectedAgent.getUuid() + "#";
+			if (message.startsWith(commandExpectedMessage)) {
+				int index = message.indexOf("#");
+				if (index != -1) {
+					String commandSubstring = message.substring(index+1);
+					OnOffState state = OnOffState.valueOf(commandSubstring);
+					((OnOffActor)connectedAgent).setState(state);
+				}
+			}
 		}
 	}
 

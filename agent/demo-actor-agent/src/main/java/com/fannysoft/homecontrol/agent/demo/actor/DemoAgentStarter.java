@@ -1,24 +1,29 @@
 package com.fannysoft.homecontrol.agent.demo.actor;
 
+
+import java.util.Date;
+
+import com.fannysoft.homecontrol.agent.BasicActor;
 import com.fannysoft.homecontrol.config.Destinations;
 import com.fannysoft.homecontrol.config.ImplicitBrokerConfiguration;
 
 public class DemoAgentStarter {
 
 	public static void main(String[] args) throws InterruptedException {
-		ImplicitBrokerConfiguration agentConfiguration = new ImplicitBrokerConfiguration();
-		agentConfiguration.setPublishDestination(Destinations.SERVER_REGISTRATION_PATH);
-		agentConfiguration.setConsumeDestination(Destinations.AGENT_CONTROL_PATH);
-		agentConfiguration.setHost("localhost");
-		agentConfiguration.setKeepaliveDelay(15000); //send keepalive every 15 seconds
-		agentConfiguration.setPassword("password");
-		agentConfiguration.setPort(1883);
-		agentConfiguration.setUser("admin");
+		ImplicitBrokerConfiguration brokerConfiguration = new ImplicitBrokerConfiguration();
+		brokerConfiguration.setPublishDestination(Destinations.SERVER_REGISTRATION_PATH);
+		brokerConfiguration.setConsumeDestination(Destinations.AGENT_CONTROL_PATH);
+		brokerConfiguration.setHost("localhost");
+		brokerConfiguration.setKeepaliveDelay(15000); //send keepalive every 15 seconds
+		brokerConfiguration.setPassword("password");
+		brokerConfiguration.setPort(1883);
+		brokerConfiguration.setUser("admin");
 		
-		DemoActorAgent agent = new DemoActorAgent(agentConfiguration);
+		BasicActor actor = new BasicActor("Basic actor " + new Date(), "Actor, printing commands to console");
+		actor.initConnector(brokerConfiguration);
 				
-		synchronized (agent) {
-			agent.wait();
+		synchronized (actor) {
+			actor.wait();
 		}
 	}
 	
