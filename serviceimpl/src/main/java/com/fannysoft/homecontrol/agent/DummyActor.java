@@ -8,6 +8,9 @@ public class DummyActor extends AbstractAgent implements OnOffActor, Serializabl
 
 	private OnOffState state = OnOffState.OFF;
 	
+	public DummyActor() {
+	}
+	
 	public DummyActor(String name, String description, int id) {
 		super(name, description, id);
 	}

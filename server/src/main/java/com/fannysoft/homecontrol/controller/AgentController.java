@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,27 +15,26 @@ import com.fannysoft.homecontrol.agent.Agent;
 import com.fannysoft.homecontrol.agent.DataProvider;
 import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
-import com.fannysoft.homecontrol.repository.AgentRepository;
+import com.fannysoft.homecontrol.queue.AgentRepo;
 
 @Controller
 public class AgentController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AgentController.class);
 	
-	@Autowired
-	private AgentRepository agentRepository;
+	private AgentRepo agentRepo = AgentRepo.getInstance();
 	
 	@RequestMapping(value = "/agents", method = RequestMethod.GET)
 	public @ResponseBody List<Agent> getAllAgents() {
 		List<Agent> list = new ArrayList<Agent>();
-		list.addAll(agentRepository.getAgents());
+		list.addAll(agentRepo.getAllAgents());
 		return list;
 	}
 	
 	@RequestMapping(value = "/actor/start/{id}", method = RequestMethod.GET)
 	public @ResponseBody String startActor(@PathVariable("id") int actorId) {
 		logger.info("Start actor, ID="+actorId);
-		OnOffActor actor = (OnOffActor) agentRepository.getAgent(actorId);
+		OnOffActor actor = (OnOffActor) agentRepo.getAgent(actorId);
 		actor.setState(OnOffState.ON);
 		return "ok";
 	}
@@ -44,14 +42,14 @@ public class AgentController {
 	@RequestMapping(value = "/actor/stop/{id}", method = RequestMethod.GET)
 	public @ResponseBody String stopActor(@PathVariable("id") int actorId) {
 		logger.info("Stop actor, ID="+actorId);
-		OnOffActor actor = (OnOffActor) agentRepository.getAgent(actorId);
+		OnOffActor actor = (OnOffActor) agentRepo.getAgent(actorId);
 		actor.setState(OnOffState.OFF);
 		return "ok";
 	}
 	
 	@RequestMapping(value = "/data/get/{id}", method = RequestMethod.GET)
 	public @ResponseBody DataProvider getData(@PathVariable("id") int providerId) {
-		return (DataProvider) agentRepository.getAgent(providerId);
+		return (DataProvider) agentRepo.getAgent(providerId);
 	}
 	
 }

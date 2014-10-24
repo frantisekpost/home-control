@@ -1,13 +1,20 @@
 package com.fannysoft.homecontrol.agent;
 
+import java.util.UUID;
+
 public class AbstractAgent implements Agent {
 
 	private String name;
 	
-	private int id;
+	private Integer id;
 	
 	private String description;
+	
+	private long uuid = UUID.randomUUID().getMostSignificantBits();
 
+	public AbstractAgent() {
+	}
+	
 	public AbstractAgent(String name, String description, int id) {
 		this.name = name;
 		this.description = description;
@@ -32,13 +39,20 @@ public class AbstractAgent implements Agent {
 		return description;
 	}
 
-	public void setId(int id) {
+	@Override
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
 	@Override
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
+	
+	public long getUuid() {
+		return uuid;
+	}
+	
+	
 
 }

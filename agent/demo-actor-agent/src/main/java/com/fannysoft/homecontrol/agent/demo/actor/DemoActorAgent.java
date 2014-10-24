@@ -1,5 +1,7 @@
 package com.fannysoft.homecontrol.agent.demo.actor;
 
+import java.util.UUID;
+
 import com.fannysoft.homecontrol.agent.OnOffActor;
 import com.fannysoft.homecontrol.agent.OnOffState;
 import com.fannysoft.homecontrol.config.BrokerConfiguration;
@@ -7,9 +9,13 @@ import com.fannysoft.homecontrol.queue.OnOffActorConnectorImpl;
 
 public class DemoActorAgent implements OnOffActor {
 
-	private OnOffState state;
+	private OnOffState state = OnOffState.OFF;
 	
 	private OnOffActorConnectorImpl agentConnector;
+	
+	Integer id;
+	
+	private long uuid = UUID.randomUUID().getMostSignificantBits();
 	
 	public DemoActorAgent(BrokerConfiguration agentConfiguration) {
 		agentConnector = new OnOffActorConnectorImpl(agentConfiguration, this);
@@ -27,8 +33,8 @@ public class DemoActorAgent implements OnOffActor {
 	}
 
 	@Override
-	public int getId() {
-		return 0;
+	public Integer getId() {
+		return id;
 	}
 
 	@Override
@@ -43,4 +49,13 @@ public class DemoActorAgent implements OnOffActor {
 		return state;
 	}
 
+	@Override
+	public long getUuid() {
+		return uuid;
+	}
+
+	@Override
+	public void setId(Integer id) {
+		this.id = id;
+	}
 }

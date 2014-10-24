@@ -6,6 +6,10 @@ public interface Agent {
 	
 	String getDescription();
 	
-	int getId();
+	Integer getId();
+	
+	void setId(Integer id);
+	
+	long getUuid();
 	
 }
