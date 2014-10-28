@@ -51,7 +51,5 @@ public class AbstractAgent implements Agent {
 	public long getUuid() {
 		return uuid;
 	}
-	
-	
 
 }

@@ -26,9 +26,9 @@ public class AgentRegistrator extends AbstractMessageTransporter implements Init
 	void acceptMessage(String message) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		ServerAgent agent = null;
+		RemoteServerAgent agent = null;
 		try {
-			agent = objectMapper.readValue(message, ServerAgent.class);
+			agent = objectMapper.readValue(message, RemoteServerAgent.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

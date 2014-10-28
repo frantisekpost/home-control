@@ -12,4 +12,8 @@ public interface Agent {
 	
 	long getUuid();
 	
+	void setDescription(String description); 
+	
+	void setName(String name);
+	
 }

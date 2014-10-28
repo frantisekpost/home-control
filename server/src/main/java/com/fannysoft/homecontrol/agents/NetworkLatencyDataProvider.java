@@ -32,7 +32,6 @@ public class NetworkLatencyDataProvider extends AbstractAgent implements Periodi
 	private static final int dayQueueCapacity = 30;
 	
 	private static final long DEFAULT_PERIOD = 60000;
-//	private static final long DEFAULT_PERIOD = 1;
 	
 	private static final LatencyChecker latencyChecker = LatencyChecker.getInstance();
 	

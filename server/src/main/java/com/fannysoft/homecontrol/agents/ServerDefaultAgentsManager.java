@@ -1,20 +1,33 @@
 package com.fannysoft.homecontrol.agents;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fannysoft.homecontrol.config.BrokerConfiguration;
 import com.fannysoft.homecontrol.queue.AgentRepo;
+import com.fannysoft.homecontrol.queue.local.LocalServerDataProvider;
 
 @Component
 public class ServerDefaultAgentsManager implements InitializingBean {
 
 	AgentRepo agentRepo = AgentRepo.getInstance();
 	
+	@Autowired
+	BrokerConfiguration brokerConfiguration;
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		//TODO id should be set by repository
-//		NetworkLatencyDataProvider latency = new NetworkLatencyDataProvider("network latency", "measures network latency ");
-//		ServerDateProvider date = new ServerDateProvider();
+		
+		NetworkLatencyDataProvider networkLatencyDataProvider = new NetworkLatencyDataProvider("Network checker", "Measures network latency");
+		LocalServerDataProvider latencyDataProvider = new LocalServerDataProvider(networkLatencyDataProvider);
+		Integer id = agentRepo.putAgent(latencyDataProvider);
+		latencyDataProvider.setId(id);
+		
+		ServerDateProvider serverdateProvider = new ServerDateProvider();
+		LocalServerDataProvider dateProvider = new LocalServerDataProvider(serverdateProvider);
+		id = agentRepo.putAgent(dateProvider);
+		dateProvider.setId(id);
 	}
 
 }
