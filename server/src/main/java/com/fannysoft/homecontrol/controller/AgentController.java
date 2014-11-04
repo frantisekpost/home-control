@@ -47,8 +47,8 @@ public class AgentController {
 	}
 	
 	@RequestMapping(value = "/data/get/{id}", method = RequestMethod.GET)
-	public @ResponseBody DataProvider getData(@PathVariable("id") int providerId) {
-		return (DataProvider) agentRepo.getAgent(providerId);
+	public @ResponseBody Object getData(@PathVariable("id") int providerId) {
+		return ((DataProvider) agentRepo.getAgent(providerId)).getData();
 	}
 	
 }
