@@ -32,10 +32,13 @@ import com.fannysoft.homecontrol.data.LatencyDTO;
 
 public class ComponentFactory {
 
-//	private static final String SERVER_URL = "http://localhost:8080/server";
+	public static final String SERVER_URI = "http://localhost:8080/server";
+//	public static final String SERVER_URI = "http://192.168.111.132:8080/home-control";
+	
 	private static final String ACTOR_URL = "/actor";
 	private static final String START_ACTOR_URL = "/start/";
 	private static final String STOP_ACTOR_URL = "/stop/";
+	private static final String READ_DATA_URL = "/data/get/";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
 	
 	public static JComponent createComponent(LinkedHashMap<?, ?> agentMap) {
@@ -94,10 +97,10 @@ public class ComponentFactory {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (button.isSelected()) {
-					restTemplate.getForObject(Application.SERVER_URI+ACTOR_URL+START_ACTOR_URL+id, String.class);
+					restTemplate.getForObject(SERVER_URI+ACTOR_URL+START_ACTOR_URL+id, String.class);
 					button.setText(OnOffState.ON.name());
 				} else {
-					restTemplate.getForObject(Application.SERVER_URI+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
+					restTemplate.getForObject(SERVER_URI+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
 					button.setText(OnOffState.OFF.name());
 				}
 			}
@@ -152,17 +155,21 @@ public class ComponentFactory {
 			final JButton buttonShow = new JButton("Show data");
 			panel.add(buttonShow, gc);
 			
-			LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) data;
-			ArrayList<Integer> minuteQueue = (ArrayList<Integer>) map.get("minuteQueue");
-			ArrayList<Integer> hourQueue = (ArrayList<Integer>) map.get("hourQueue");
-			ArrayList<Integer> dayQueue = (ArrayList<Integer>) map.get("dayQueue");
-			
-			final LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
-
 			buttonShow.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					
+					RestTemplate restTemplate = new RestTemplate();
+					Object data = restTemplate.getForObject(SERVER_URI + READ_DATA_URL + id, Object.class);
+					
+					LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) data;
+					ArrayList<Integer> minuteQueue = (ArrayList<Integer>) map.get("minuteQueue");
+					ArrayList<Integer> hourQueue = (ArrayList<Integer>) map.get("hourQueue");
+					ArrayList<Integer> dayQueue = (ArrayList<Integer>) map.get("dayQueue");
+					
+					LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
+					
 					showLatencyData(latencyData, buttonShow);
 				}
 			});
