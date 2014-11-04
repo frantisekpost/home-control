@@ -194,7 +194,7 @@ public class ComponentFactory {
 		}
 		text.append("\n\nLast 30 days: \n");
 		for (long l : latencyData.getDayQueue()) {
-			System.out.print(" " + l);
+			text.append(" " + l);
 		}
 		
 		textArea.setText(text.toString());
