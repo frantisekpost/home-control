@@ -1,10 +1,8 @@
 package com.fannysoft.homecontrol.agents;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fannysoft.homecontrol.config.BrokerConfiguration;
 import com.fannysoft.homecontrol.queue.AgentRepo;
 import com.fannysoft.homecontrol.queue.local.LocalServerDataProvider;
 
@@ -12,9 +10,6 @@ import com.fannysoft.homecontrol.queue.local.LocalServerDataProvider;
 public class ServerDefaultAgentsManager implements InitializingBean {
 
 	AgentRepo agentRepo = AgentRepo.getInstance();
-	
-	@Autowired
-	BrokerConfiguration brokerConfiguration;
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
