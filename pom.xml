@@ -157,7 +157,6 @@
 		<module>service</module>
 		<module>serviceimpl</module>
 		<module>server</module>
-		<module>client</module>
 	</modules>
 
 </project>
