@@ -35,9 +35,18 @@ public class ComponentFactory {
 	static RestTemplate restTemplate = new RestTemplate();
 	
 	public static Pane createComponent(LinkedHashMap<?, ?> agentMap) {
+		
+		int health = (Integer) agentMap.get("health");
 		int id = (Integer) agentMap.get("id");
 		String name = (String) agentMap.get("name");
 		String description = (String) agentMap.get("description");
+		
+		if (health == 0) {
+			description += " (live)";
+		} else {
+			description += " (inactive for " + health + " minute(s))";
+		}
+		
 		Object state = agentMap.get("state");
 		Object dataType = agentMap.get("dataType");
 		if (state != null) {

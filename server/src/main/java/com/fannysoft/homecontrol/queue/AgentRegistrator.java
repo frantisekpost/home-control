@@ -39,7 +39,9 @@ public class AgentRegistrator extends AbstractMessageTransporter implements Init
 				Integer id = agentRepo.putAgent(agent);
 				String response = agent.getUuid() + ";" + id;
 				sendMessage(response);
-			} 
+			} else {
+				agentRepo.keepAlive(agent.getId());
+			}
 		}
 		
 	}

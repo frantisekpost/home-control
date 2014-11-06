@@ -54,5 +54,15 @@ public class LocalServerAgent<T extends Agent> implements ServerAgent {
 	public void setName(String name) {
 		agent.setName(name);
 	}
+
+	@Override
+	public void setHealth(int health) {
+		//noop
+	}
+
+	@Override
+	public int getHealth() {
+		return 0;
+	}
 	
 }

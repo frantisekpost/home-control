@@ -13,6 +13,8 @@ public abstract class AbstractServerAgent implements ServerAgent {
 	private String description;
 	
 	private long uuid;
+	
+	private int health;
 
 	public OnOffState getState() {
 		return state;
@@ -77,4 +79,13 @@ public abstract class AbstractServerAgent implements ServerAgent {
 		return true;
 	}
 	
+	@Override
+	public int getHealth() {
+		return health;
+	}
+	
+	@Override
+	public void setHealth(int health) {
+		this.health = health;
+	}
 }

@@ -7,4 +7,8 @@ public interface ServerAgent extends Agent {
 
 	void sendState(OnOffState state);
 	
+	void setHealth(int health);
+
+	int getHealth();
+	
 }
