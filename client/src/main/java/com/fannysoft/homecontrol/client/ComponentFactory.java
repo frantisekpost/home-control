@@ -1,28 +1,19 @@
 package com.fannysoft.homecontrol.client;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import org.springframework.web.client.RestTemplate;
 
@@ -41,7 +32,9 @@ public class ComponentFactory {
 	private static final String READ_DATA_URL = "/data/get/";
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
 	
-	public static JComponent createComponent(LinkedHashMap<?, ?> agentMap) {
+	static RestTemplate restTemplate = new RestTemplate();
+	
+	public static Pane createComponent(LinkedHashMap<?, ?> agentMap) {
 		int id = (Integer) agentMap.get("id");
 		String name = (String) agentMap.get("name");
 		String description = (String) agentMap.get("description");
@@ -55,141 +48,100 @@ public class ComponentFactory {
 			Object data = agentMap.get("data");
 			return createDataProvider(id, name, description, d, data);
 		} else {
-			return new JPanel();
+			return new Pane();
 		}
 	}
 	
-	private static JComponent createOnOffActor(final int id, String name, String description, OnOffState state) {
-		JPanel panel = new JPanel(new GridBagLayout());
-		Border b = BorderFactory.createRaisedSoftBevelBorder();
-		panel.setBorder(b);
+	private static Pane createOnOffActor(final int id, String name, String description, OnOffState state) {
 		
-		JLabel nameLabel = new JLabel(name);
-		JLabel descriptionLabel = new JLabel(description);
-		final JToggleButton button = new JToggleButton(state.name());
-		GridBagConstraints gc = new GridBagConstraints();
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.weightx = 1f;
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.anchor = GridBagConstraints.LINE_START;
-		panel.add(nameLabel, gc);
+		AnchorPane pane = new AnchorPane();
+		pane.getStyleClass().add("border");
+		Label nameLabel = new Label(name);
+		Label descriptionLabel = new Label(description);
 		
-		gc = new GridBagConstraints();
-		gc.gridx = 0;
-		gc.weightx = 1f;
-		gc.weightx = 1f;
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.gridy = 1;
-		panel.add(descriptionLabel, gc);
+		AnchorPane.setLeftAnchor(nameLabel, 10d);
+		AnchorPane.setTopAnchor(nameLabel, 5d);
+
+		AnchorPane.setLeftAnchor(descriptionLabel, 10d);
+		AnchorPane.setTopAnchor(descriptionLabel, 25d);
 		
-		gc = new GridBagConstraints();
-		gc.gridx = 1;
-		gc.gridy = 0;
-		gc.weightx = 0f;
-		gc.gridheight = 2;
-		panel.add(button, gc);
+		pane.getChildren().add(nameLabel);
+		pane.getChildren().add(descriptionLabel);
 		
-		final RestTemplate restTemplate = new RestTemplate();
-		button.addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (button.isSelected()) {
-					restTemplate.getForObject(SERVER_URI+ACTOR_URL+START_ACTOR_URL+id, String.class);
-					button.setText(OnOffState.ON.name());
-				} else {
-					restTemplate.getForObject(SERVER_URI+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
-					button.setText(OnOffState.OFF.name());
-				}
+		ToggleButton toggle = new ToggleButton("OFF");
+		
+		AnchorPane.setRightAnchor(toggle, 10d);
+		AnchorPane.setTopAnchor(toggle, 5d);
+		pane.getChildren().add(toggle);
+		
+		toggle.setOnAction(e -> {
+			if (toggle.isSelected()) {
+				restTemplate.getForObject(SERVER_URI+ACTOR_URL+START_ACTOR_URL+id, String.class);
+				toggle.setText(OnOffState.ON.name());
+			} else {
+				restTemplate.getForObject(SERVER_URI+ACTOR_URL+STOP_ACTOR_URL+id, String.class);
+				toggle.setText(OnOffState.OFF.name());
 			}
-			
 		});
 		
-		return panel;
+		return pane;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static JComponent createDataProvider(final int id, String name, String description, DataType d, Object data) {
-		JPanel panel = new JPanel(new GridBagLayout());
-		Border b = BorderFactory.createRaisedSoftBevelBorder();
-		panel.setBorder(b);
+	private static Pane createDataProvider(final int id, String name, String description, DataType d, Object data) {
+		AnchorPane pane = new AnchorPane();
+		pane.getStyleClass().add("border");
 		
-		JLabel nameLabel = new JLabel(name);
-		JLabel descriptionLabel = new JLabel(description);
-		JLabel valueLabel = new JLabel(description);
+		Label nameLabel = new Label(name);
+		Label descriptionLabel = new Label(description);
 		
-		GridBagConstraints gc = new GridBagConstraints();
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.weightx = 1f;
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.anchor = GridBagConstraints.LINE_START;
-		panel.add(nameLabel, gc);
+		AnchorPane.setLeftAnchor(nameLabel, 10d);
+		AnchorPane.setTopAnchor(nameLabel, 5d);
+
+		AnchorPane.setLeftAnchor(descriptionLabel, 10d);
+		AnchorPane.setTopAnchor(descriptionLabel, 25d);
 		
-		gc = new GridBagConstraints();
-		gc.gridx = 0;
-		gc.weightx = 1f;
-		gc.weightx = 1f;
-		gc.fill = GridBagConstraints.HORIZONTAL;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.gridy = 1;
-		panel.add(descriptionLabel, gc);
-		
-		gc = new GridBagConstraints();
-		gc.gridx = 1;
-		gc.gridy = 0;
-		gc.weightx = 0f;
-		gc.gridheight = 2;
-		panel.add(valueLabel, gc);
+		pane.getChildren().add(nameLabel);
+		pane.getChildren().add(descriptionLabel);
 		
 		switch (d) {
 		case DATE:
 			long ts = ((Long)data).longValue();
 			Date date = new Date(ts);
-			valueLabel.setText(dateFormat.format(date));
+			
+			Label valueLabel = new Label(dateFormat.format(date));
+			AnchorPane.setRightAnchor(valueLabel, 10d);
+			AnchorPane.setTopAnchor(valueLabel, 5d);
+			pane.getChildren().add(valueLabel);
 			break;
 		case LATENCY_DATA:
-			panel.remove(valueLabel);
-			final JButton buttonShow = new JButton("Show data");
-			panel.add(buttonShow, gc);
+			ToggleButton toggle = new ToggleButton("Show data");
 			
-			buttonShow.addActionListener(new ActionListener() {
+			AnchorPane.setRightAnchor(toggle, 10d);
+			AnchorPane.setTopAnchor(toggle, 5d);
+			pane.getChildren().add(toggle);
+			
+			toggle.setOnAction(e -> {
+				RestTemplate restTemplate = new RestTemplate();
+				LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) restTemplate.getForObject(SERVER_URI + READ_DATA_URL + id, Object.class);;
+				ArrayList<Integer> minuteQueue = (ArrayList<Integer>) map.get("minuteQueue");
+				ArrayList<Integer> hourQueue = (ArrayList<Integer>) map.get("hourQueue");
+				ArrayList<Integer> dayQueue = (ArrayList<Integer>) map.get("dayQueue");
 				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					
-					RestTemplate restTemplate = new RestTemplate();
-					Object data = restTemplate.getForObject(SERVER_URI + READ_DATA_URL + id, Object.class);
-					
-					LinkedHashMap<?,?> map = (LinkedHashMap<?, ?>) data;
-					ArrayList<Integer> minuteQueue = (ArrayList<Integer>) map.get("minuteQueue");
-					ArrayList<Integer> hourQueue = (ArrayList<Integer>) map.get("hourQueue");
-					ArrayList<Integer> dayQueue = (ArrayList<Integer>) map.get("dayQueue");
-					
-					LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
-					
-					showLatencyData(latencyData, buttonShow);
-				}
+				LatencyDTO latencyData = new LatencyDTO(minuteQueue, hourQueue, dayQueue);
+				
+				showLatencyData(latencyData, toggle);
 			});
-			
-		default:
 			break;
+		default:
 		}
 		
-		return panel;
+		return pane;
+
 	}
 
-	protected static void showLatencyData(LatencyDTO latencyData, JComponent parentComponent) {
-		//TODO some graphs will be here one day
-		JFrame frame = (JFrame) SwingUtilities.getAncestorOfClass(JFrame.class, parentComponent);
-		JDialog dialog = new JDialog(frame, true);
-		dialog.setTitle("Network latency data dialog");
-		JPanel panel = new JPanel(new BorderLayout());
-		JTextArea textArea = new JTextArea();
-		panel.add(textArea, BorderLayout.CENTER);
-		dialog.setContentPane(panel);
+	private static void showLatencyData(LatencyDTO latencyData, ToggleButton toggle) {
+		Stage stage = (Stage) toggle.getScene().getWindow();
 		
 		StringBuilder text = new StringBuilder("Latency of network in ms \n\nLast 60 minutes: \n");
 		for (long l : latencyData.getMinuteQueue()) {
@@ -204,9 +156,14 @@ public class ComponentFactory {
 			text.append(" " + l);
 		}
 		
-		textArea.setText(text.toString());
-		dialog.pack();
-		dialog.setVisible(true);
+		final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+        VBox dialogVbox = new VBox(20);
+        dialogVbox.getChildren().add(new Text(text.toString()));
+        Scene dialogScene = new Scene(dialogVbox, 500, 200);
+        dialog.setScene(dialogScene);
+        dialog.show();
 	}
 	
 }
