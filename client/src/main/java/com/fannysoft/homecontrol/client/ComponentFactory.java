@@ -36,7 +36,8 @@ public class ComponentFactory {
 	
 	public static Pane createComponent(LinkedHashMap<?, ?> agentMap) {
 		
-		int health = (Integer) agentMap.get("health");
+//		int health = (Integer) agentMap.get("health");
+		int health = 0;
 		int id = (Integer) agentMap.get("id");
 		String name = (String) agentMap.get("name");
 		String description = (String) agentMap.get("description");

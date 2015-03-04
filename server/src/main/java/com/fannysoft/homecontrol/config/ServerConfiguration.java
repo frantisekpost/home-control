@@ -11,6 +11,7 @@ public class ServerConfiguration {
 		ImplicitBrokerConfiguration brokerConfiguration = new ImplicitBrokerConfiguration();
 		brokerConfiguration.setConsumeDestination(Destinations.SERVER_REGISTRATION_PATH);
 		brokerConfiguration.setPublishDestination(Destinations.AGENT_CONTROL_PATH);
+//		brokerConfiguration.setHost("192.168.111.132");
 		brokerConfiguration.setHost("localhost");
 		brokerConfiguration.setPassword("password");
 		brokerConfiguration.setPort(1883);
